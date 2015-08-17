@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ch.bbcag.gamexchange.exception.LoginFailedException;
 import ch.bbcag.gamexchange.lowlevel.dao.UserDaoImpl;
 import ch.bbcag.gamexchange.lowlevel.model.User;
 
@@ -42,16 +43,24 @@ public class LoginServlet extends HttpServlet {
 			try {
 				user = userDao.getByEMail(useremail);
 				
-				if(user.getUserPassword().equals(userpassword)) {
+				if(user == null) {
+					throw new LoginFailedException();
+				} else if(user.getUserPassword().equals(userpassword)) { 
 					session.setAttribute("user", user);
 					user = (User) session.getAttribute("user");
 					LOGGER.info("Successfull loged in as " + useremail);
 					dispatcher.forward(request, response);					
 				}			
 				
-			} catch (SQLException e) {
+			} catch (SQLException | LoginFailedException e) {
 				LOGGER.severe("Failed to get user with email " + useremail);
+				try {
+					throw new LoginFailedException();
+				} catch (LoginFailedException e1) {
+					e1.printStackTrace();
+				}
 				e.printStackTrace();
+
 			}
 
 		} else {
@@ -66,7 +75,11 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		doPost(request, response);
+		try {
+			doPost(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 

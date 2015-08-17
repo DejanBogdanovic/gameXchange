@@ -6,24 +6,20 @@
   		<div class="form-group">
     		<label for="title">Titel</label>
     		<input type="text" class="form-control" id="title" 
-           		placeholder="Titel eingeben" name="title"
-           		maxlength="40" title="Ein Titel für den Artikel"
-           		required="required">
+				name="title" maxlength="40" required="required">
   		</div>
   		<div class="form-group">
-    		<label for="description">Beschreibung</label>
+    		<label for="description">Description</label>
     		<textarea id="description" class="form-control" name="description" 
              		 rows="10" cols="100" maxlength="1000">
             </textarea>
   		</div>
   		<div class="form-group">
-    		<label for="price">Preis</label>
-    		<input type="number" class="form-control" id="price" name="price"
-           		title="Ein Preis für den Artikel" placeholder="Preis eingeben" 
-           		required="required">
+    		<label for="price">Price</label>
+    		<input type="number" class="form-control" id="price" name="price" required="required">
   		</div>
  		<div class="form-group">
-    		<label for="foto">Foto</label>
+    		<label for="foto">Picture</label>
     		<input type="file" class="form-control" id="foto" name="foto">
   		</div>
   		<button type="submit" class="btn btn-default">Tauschen</button>

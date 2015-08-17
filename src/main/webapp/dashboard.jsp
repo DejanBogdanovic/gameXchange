@@ -10,7 +10,7 @@
 			User user = (User) session.getAttribute("user");
 		%>
 		<div id="picture">
-			<img src="default.jpg" alt="Profile Picture"><h2><%=user.getUserEmail() %></h2>
+			<img src="default.jpg" alt="Profile Picture"><h2><%out.println(user.getSurname() + " "+ user.getName()); %></h2>
 		</div>
 			
 		<table id="profile-details">
