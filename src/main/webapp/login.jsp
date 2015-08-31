@@ -1,7 +1,19 @@
+<%@ page language="java" contentType="text/html;charset=UTF-8"%>
 <%@ include file="header.jspf"%>
 
 <div class="container">
-
+	
+	<%
+	if(request.getAttribute("errorLogin") != null) {
+	%>
+	<div class="alert alert-danger">
+	<p>
+		<%= request.getAttribute("errorLogin") %>
+	</p>
+	</div>
+	<% 	
+	} 
+	%>
 	<form action="login" method="post" class="form-signin">
 		<h2 class="form-signin-heading">Please sign in</h2>
 		<label for="inputEmail" class="sr-only">Email address</label> 

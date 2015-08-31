@@ -8,11 +8,15 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
-	private String surname;
+	private String lastname;
 	private String userEmail;
 	private String userPassword;
 	private String userName;
 	private Double balance = 0.0;
+	private String dateOfBirth;
+	private String domicile;
+	private String postcode;
+	private String country;
 
 	public User() {
 
@@ -23,32 +27,20 @@ public class User implements Serializable {
 		this.userPassword = password;
 	}
 
-	/**
-	 * @return the name
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * @param name the name to set
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	/**
-	 * @return the surname
-	 */
-	public String getSurname() {
-		return surname;
+	public String getLastname() {
+		return lastname;
 	}
 
-	/**
-	 * @param surname the surname to set
-	 */
-	public void setSurname(String surname) {
-		this.surname = surname;
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
 	}
 
 	public int getUserId() {
@@ -75,16 +67,10 @@ public class User implements Serializable {
 		this.userPassword = userpassword;
 	}
 
-	/**
-	 * @return the userName
-	 */
 	public String getUserName() {
 		return userName;
 	}
 
-	/**
-	 * @param userName the userName to set
-	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
@@ -97,6 +83,46 @@ public class User implements Serializable {
 		this.balance = balance;
 	}
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(String dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
+	public String getDomicile() {
+		return domicile;
+	}
+
+	public void setDomicile(String domicile) {
+		this.domicile = domicile;
+	}
+
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
 	public String toString() {
 		return "[" + getUserId() + "," + getUserEmail() + "]";
 	}
@@ -104,27 +130,17 @@ public class User implements Serializable {
 	public static User fromResultSet(ResultSet rs) throws SQLException {
 		User user = new User();
 
-		int id = Integer.valueOf(rs.getInt("userId"));
-		user.setUserId(id);
-
-		String name = rs.getString("name");
-		user.setName(name);
-		
-		String surname = rs.getString("surname");
-		user.setSurname(surname);
-		
-		String email = rs.getString("userEmail");
-		user.setUserEmail(email);
-
-		String password = rs.getString("userPassword");
-		user.setUserPassword(password);
-		
-		String username = rs.getString("userName");
-		user.setUserName(username);
-
-		Double balance = rs.getDouble("balance");
-		user.setBalance(balance);
-
+		user.setUserId(Integer.valueOf(rs.getInt("userId")));
+		user.setName(rs.getString("name"));		
+		user.setLastname(rs.getString("lastname"));		
+		user.setUserEmail(rs.getString("userEmail"));
+		user.setUserPassword(rs.getString("userPassword"));		
+		user.setUserName(rs.getString("userName"));
+		user.setBalance(rs.getDouble("balance"));		
+		user.setDateOfBirth(rs.getString("dateOfBirth"));
+		user.setDomicile(rs.getString("domicile"));
+		user.setPostcode(rs.getString("postcode"));
+		user.setCountry(rs.getString("country"));
 		return user;
 	}
 

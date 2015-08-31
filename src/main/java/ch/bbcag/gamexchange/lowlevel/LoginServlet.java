@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import ch.bbcag.gamexchange.exception.LoginFailedException;
 import ch.bbcag.gamexchange.lowlevel.dao.UserDaoImpl;
 import ch.bbcag.gamexchange.lowlevel.model.User;
 
@@ -33,7 +32,8 @@ public class LoginServlet extends HttpServlet {
 		UserDaoImpl userDao = new UserDaoImpl();
 		String useremail = request.getParameter("userEmail");
 		String userpassword = request.getParameter("userPassword");
-		RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard.jsp");
+		RequestDispatcher dispatcherNormal = request.getRequestDispatcher("dashboard.jsp");
+		RequestDispatcher dispatcherError = request.getRequestDispatcher("login.jsp");
 
 		HttpSession session = request.getSession();
 
@@ -42,32 +42,26 @@ public class LoginServlet extends HttpServlet {
 			
 			try {
 				user = userDao.getByEMail(useremail);
-				
-				if(user == null) {
-					throw new LoginFailedException();
+
+				if(user == null || !user.getUserPassword().equals(userpassword)) {
+					request.setAttribute("errorLogin", "Wrong E-Mail or Password");
+					dispatcherError.forward(request, response);
 				} else if(user.getUserPassword().equals(userpassword)) { 
 					session.setAttribute("user", user);
-					user = (User) session.getAttribute("user");
 					LOGGER.info("Successfull loged in as " + useremail);
-					dispatcher.forward(request, response);					
+					dispatcherNormal.forward(request, response);					
 				}			
 				
-			} catch (SQLException | LoginFailedException e) {
+			} catch (SQLException e) {
 				LOGGER.severe("Failed to get user with email " + useremail);
-				try {
-					throw new LoginFailedException();
-				} catch (LoginFailedException e1) {
-					e1.printStackTrace();
-				}
 				e.printStackTrace();
-
 			}
 
 		} else {
 
 			user = (User) session.getAttribute("user");
 			LOGGER.info("Welcome back! You are logged in as " + user.getUserEmail());
-			dispatcher.forward(request, response);
+			dispatcherNormal.forward(request, response);
 		}
 
 	}

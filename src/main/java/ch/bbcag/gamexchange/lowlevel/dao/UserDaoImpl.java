@@ -36,7 +36,7 @@ public class UserDaoImpl implements UserDao {
 		LOGGER.info("Get all users from database");
 		List<User> users = new ArrayList<User>();
 		
-		ps = con.prepareStatement("SELECT userId, name, surname, usereEail, userPassword, userName, balance FROM user");
+		ps = con.prepareStatement("SELECT userId, name, lastname, usereEail, userPassword, userName, balance, dateOfBirth, domicile, postcode, country FROM user");
 		rs = ps.executeQuery();
 		
 		while(rs.next()) {
@@ -50,7 +50,7 @@ public class UserDaoImpl implements UserDao {
 		LOGGER.info("Get user by id " + id);
 		User user = null;
 		
-		ps = con.prepareStatement("SELECT userId, name, surname, userEmail, userPassword, userName, balance FROM user WHERE userId = ?");
+		ps = con.prepareStatement("SELECT userId, name, lastname, userEmail, userPassword, userName, balance, dateOfBirth, domicile, postcode, country FROM user WHERE userId = ?");
 		ps.setInt(1, id);
 		
 		rs = ps.executeQuery();
@@ -66,7 +66,7 @@ public class UserDaoImpl implements UserDao {
 		LOGGER.info("Get user by mail " + mail);
 		User user = null;
 		
-		ps = con.prepareStatement("SELECT userId, name, surname, userEmail, userPassword, userName, balance FROM user WHERE userEmail = ?");
+		ps = con.prepareStatement("SELECT userId, name, lastname, userEmail, userPassword, userName, balance, dateOfBirth, domicile, postcode, country FROM user WHERE userEmail = ?");
 		ps.setString(1, mail);
 		
 		rs = ps.executeQuery();
@@ -80,14 +80,18 @@ public class UserDaoImpl implements UserDao {
 	public void create(User user) throws SQLException {
 //		LOGGER.info("Create user");
 		
-		String sql = "INSERT INTO user (name, surname, userEmail, userPassword, userName, balance) VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO user (name, lastname, userEmail, userPassword, userName, balance, dateOfBirth, domicile, postcode, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		ps = con.prepareStatement(sql);
 		ps.setString(1, user.getName());
-		ps.setString(2, user.getSurname());
+		ps.setString(2, user.getLastname());
 		ps.setString(3, user.getUserEmail());
 		ps.setString(4, user.getUserPassword());
 		ps.setString(5, user.getUserName());
 		ps.setDouble(6, user.getBalance());
+		ps.setString(7, user.getDateOfBirth());
+		ps.setString(8, user.getDomicile());
+		ps.setString(9, user.getPostcode());
+		ps.setString(10, user.getCountry());
 		ps.executeUpdate();
 
 	}
@@ -96,14 +100,18 @@ public class UserDaoImpl implements UserDao {
 	public void update(User user) throws SQLException {
 		LOGGER.info("Update user with email " + user.getUserEmail());
 		
-		ps = con.prepareStatement("UPDATE user SET name = ?, surname = ?, userEmail = ?, userPassword = ?, userName = ?, balance = ? WHERE userId = ?");
+		ps = con.prepareStatement("UPDATE user SET name = ?, lastname = ?, userEmail = ?, userPassword = ?, userName = ?, balance = ?, , dateOfBirth = ?, domicile = ?, postcode = ?, country = ? WHERE userId = ?");
 		ps.setString(1, user.getName());
-		ps.setString(2, user.getSurname());
+		ps.setString(2, user.getLastname());
 		ps.setString(3, user.getUserEmail());
 		ps.setString(4, user.getUserPassword());
 		ps.setString(5, user.getUserName());
 		ps.setDouble(6, user.getBalance());
-		ps.setInt(7, user.getUserId());
+		ps.setString(7, user.getDateOfBirth());
+		ps.setString(8, user.getDomicile());
+		ps.setString(9, user.getPostcode());
+		ps.setString(10, user.getCountry());
+		ps.setInt(11, user.getUserId());
 		ps.executeUpdate();
 		
 	}

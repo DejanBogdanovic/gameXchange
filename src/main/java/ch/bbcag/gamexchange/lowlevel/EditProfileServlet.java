@@ -2,32 +2,36 @@ package ch.bbcag.gamexchange.lowlevel;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.Logger;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import ch.bbcag.gamexchange.lowlevel.dao.UserDaoImpl;
 import ch.bbcag.gamexchange.lowlevel.model.User;
 
 /**
- * Servlet implementation class RegisterServlet
+ * Servlet implementation class EditProfileServlet
  */
-@WebServlet(urlPatterns={"/register"})
-public class RegisterServlet extends HttpServlet {
+@WebServlet(urlPatterns={"/editProfile"})
+public class EditProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private final static Logger LOGGER = Logger.getLogger(RegisterServlet.class.getName());
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public EditProfileServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	response.setContentType("text/html;charset=UTF-8");
 		
 		UserDaoImpl daoImpl = new UserDaoImpl();
 		User user = new User();
@@ -41,19 +45,20 @@ public class RegisterServlet extends HttpServlet {
 		user.setPostcode(request.getParameter("postcode"));
 		user.setCountry(request.getParameter("country"));
 		
-		final RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
-		
 		try {
-			daoImpl.create(user);
-			HttpSession session = request.getSession();
-			session.setAttribute("user", daoImpl.getByEMail(user.getUserEmail()));
+			daoImpl.update(user);
+			request.setAttribute("Changes saved", "Your changes were saved successfully!");
 		} catch (SQLException e) {
-			LOGGER.severe("Failed to create a new user");
 			e.printStackTrace();
+			request.setAttribute("Changes not saved", "Your changes could not be saved. Please try it later again.");
 		}
+    }
 
-		dispatcher.forward(request, response);
-
+    /**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request, response);
 	}
 
 }

@@ -35,7 +35,7 @@
 <body>
 
 <!-- Fixed navbar -->
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed"
@@ -75,7 +75,13 @@
 				<li><a href="offers.jsp">Offers</a></li>
 				<li><a href="sell.jsp">Sell</a></li>
 			<%
-          		} else if(request.getRequestURI().equals("/gameXchange/sell.jsp")) {
+          		} else if(request.getRequestURI().equals("/gameXchange/editProfile.jsp")) {
+          	%>
+     			<li><a href="index.jsp">Home</a></li>
+     			<li><a href="offers.jsp">Offers</a></li>
+     			<li><a href="sell.jsp">Sell</a></li>
+     		<%
+               	} else if(request.getRequestURI().equals("/gameXchange/sell.jsp")) {
           	%>	
           		<li><a href="index.jsp">Home</a></li>
 				<li><a href="offers.jsp">Offers</a></li>
@@ -96,8 +102,20 @@
             		
             		User user = (User) session.getAttribute("user");
 			%>
-				<li><a href="dashboard.jsp">My Profile: <strong><%= user.getUserName() %></strong></a></li>
-				<li><a href="logout">Logout</a></li>
+				<li role="presentation" class="dropdown">
+					<a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                       	role="button" aria-haspopup="true" aria-expanded="false">Mein
+                       	Profil: <strong><%=user.getUserName()%></strong> 
+                    	<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                    	<li><a href="dashboard.jsp">Mein Profil anzeigen</a></li>
+                    	<li><a href="editProfile.jsp">Mein Profil bearbeiten</a></li>
+                    	<li><a href="dashboard.jsp">Einstellungen</a></li>
+                    	<li><a href="logout">Logout</a></li>
+                    </ul>
+                </li>
+				
 			<% 
 				} 
 			%>
